@@ -1,152 +1,110 @@
-
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Play BNB — Exchanges Marquee</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Play BNB — Exchanges</title>
 
 <style>
-:root{
-  --bg:#000;
-  --gold-1:#ffd84d;
-  --gold-2:#ffb300;
-  --muted:rgba(255,255,255,0.75);
-  --speed:40;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
 body{
-  background:var(--bg);
+  margin:0;
+  background:#000;
   color:#fff;
-  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  font-family:Inter,Arial;
   display:flex;
-  align-items:center;
   justify-content:center;
-  padding:28px;
-  overflow:hidden;
-}
-
-.wrap{width:min(1200px,96vw)}
-.card{
-  background:rgba(255,255,255,0.02);
-  border-radius:14px;
+  align-items:center;
   padding:30px;
-  border:1px solid rgba(255,255,255,0.04);
 }
-
-.header{display:flex;gap:16px;margin-bottom:18px}
-.logo-box{
-  width:100px;height:100px;border-radius:16px;
-  background:radial-gradient(circle at 30% 25%,var(--gold-1),var(--gold-2));
-}
-.brand-title{font-size:42px;font-weight:900;color:var(--gold-1)}
-.subtitle{font-size:14px;color:var(--muted)}
-
+.wrap{width:1100px}
 .marquee-wrap{
   overflow:hidden;
-  background:rgba(0,0,0,0.4);
-  padding:18px;
+  background:rgba(255,255,255,0.03);
+  padding:20px;
   border-radius:12px;
 }
-.marquee{display:flex;gap:34px;will-change:transform}
-.track{display:flex;gap:34px}
-
+.marquee{display:flex;gap:40px;will-change:transform}
 .item{
-  min-width:260px;
-  padding:12px 16px;
-  border-radius:12px;
+  min-width:240px;
   display:flex;
   align-items:center;
   gap:14px;
-  background:rgba(255,255,255,0.02);
-  font-weight:800;
-  color:var(--muted);
+  background:rgba(255,255,255,0.04);
+  padding:14px;
+  border-radius:12px;
 }
 .logo{
-  width:120px;height:120px;
+  width:90px;height:90px;
+  background:#ffd84d;
   border-radius:14px;
-  background:var(--gold-1);
   display:flex;
   align-items:center;
   justify-content:center;
 }
-.logo img{
-  width:78%;
-  height:78%;
-  object-fit:contain;
-}
+.logo svg{width:70%;height:70%}
 </style>
 </head>
 
 <body>
 <div class="wrap">
-  <div class="card">
-    <div class="header">
-      <div class="logo-box"></div>
-      <div>
-        <div class="brand-title">Play BNB</div>
-        <div class="subtitle">Highlighted Exchanges</div>
-      </div>
-    </div>
+  <div class="marquee-wrap">
+    <div id="marquee" class="marquee">
 
-    <div class="marquee-wrap">
-      <div id="marquee" class="marquee"></div>
+      <!-- BINANCE -->
+      <div class="item">
+        <div class="logo">
+          <svg viewBox="0 0 24 24" fill="#000">
+            <path d="M12 2l4 4-4 4-4-4 4-4zm6 6l4 4-4 4-4-4 4-4zM12 14l4 4-4 4-4-4 4-4zm-6-6l4 4-4 4-4-4 4-4z"/>
+          </svg>
+        </div>Binance
+      </div>
+
+      <!-- COINBASE -->
+      <div class="item">
+        <div class="logo">
+          <svg viewBox="0 0 24 24" fill="#000">
+            <circle cx="12" cy="12" r="9"/>
+            <circle cx="12" cy="12" r="5" fill="#ffd84d"/>
+          </svg>
+        </div>Coinbase
+      </div>
+
+      <!-- OKX -->
+      <div class="item">
+        <div class="logo">
+          <svg viewBox="0 0 24 24" fill="#000">
+            <rect x="2" y="2" width="8" height="8"/>
+            <rect x="14" y="2" width="8" height="8"/>
+            <rect x="2" y="14" width="8" height="8"/>
+            <rect x="14" y="14" width="8" height="8"/>
+          </svg>
+        </div>OKX
+      </div>
+
+      <!-- UNISWAP -->
+      <div class="item">
+        <div class="logo">
+          <svg viewBox="0 0 24 24" fill="#000">
+            <path d="M12 2c4 3 6 7 6 11s-3 7-6 9c-3-2-6-5-6-9S8 5 12 2z"/>
+          </svg>
+        </div>Uniswap
+      </div>
+
     </div>
   </div>
 </div>
 
 <script>
-const logos = [
-  {name:'Binance', file:'logos/binance.svg'},
-  {name:'Coinbase', file:'logos/coinbase.svg'},
-  {name:'OKX', file:'logos/okx.png'},
-  {name:'KuCoin', file:'logos/kucoin.png'},
-  {name:'Bybit', file:'logos/bybit.svg'},
-
-  {name:'Uniswap', file:'logos/uniswap.svg'},
-  {name:'PancakeSwap', file:'logos/pancakeswap.png'},
-  {name:'SushiSwap', file:'logos/sushiswap.svg'},
-  {name:'Curve', file:'logos/curve.png'},
-  {name:'dYdX', file:'logos/dydx.svg'}
-];
-
-const marquee = document.getElementById('marquee');
-
-function buildTrack(){
-  const track = document.createElement('div');
-  track.className='track';
-
-  logos.forEach(l=>{
-    const item=document.createElement('div');
-    item.className='item';
-
-    const box=document.createElement('div');
-    box.className='logo';
-    const img=document.createElement('img');
-    img.src=l.file;
-    img.alt=l.name;
-
-    box.appendChild(img);
-    item.appendChild(box);
-    item.appendChild(document.createTextNode(l.name));
-    track.appendChild(item);
-  });
-
-  return track;
-}
-
-const t1=buildTrack();
-const t2=t1.cloneNode(true);
-marquee.appendChild(t1);
-marquee.appendChild(t2);
+const marquee=document.getElementById('marquee');
+const clone=marquee.cloneNode(true);
+marquee.appendChild(clone);
 
 requestAnimationFrame(()=>{
-  const w=t1.offsetWidth;
-  const duration=w/40;
+  const w=marquee.scrollWidth/2;
   const style=document.createElement('style');
-  style.innerHTML=`@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-${w}px)}}`;
+  style.innerHTML=`@keyframes scroll{to{transform:translateX(-${w}px)}}`;
   document.head.appendChild(style);
-  marquee.style.animation=`scroll ${duration}s linear infinite`;
+  marquee.style.animation=`scroll ${w/40}s linear infinite`;
 });
 </script>
 </body>
