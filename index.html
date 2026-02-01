@@ -1,0 +1,213 @@
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Play BNB — Exchanges</title>
+
+<style>
+:root{
+  --bg:#000;
+  --gold:#ffd84d;
+  --muted:rgba(255,255,255,.7);
+  --speed:40;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+
+body{
+  font-family:Inter,system-ui,Arial;
+  background:var(--bg);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:30px;
+  overflow:hidden;
+}
+
+/* background dots */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+.dot{
+  position:absolute;
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--gold);
+  opacity:.6;
+  animation:float 4s ease-in-out infinite alternate;
+}
+@keyframes float{
+  from{transform:translateY(0)}
+  to{transform:translateY(-14px)}
+}
+
+/* card */
+.wrap{z-index:2;width:min(1200px,96vw)}
+.card{
+  background:rgba(255,255,255,.02);
+  border-radius:16px;
+  padding:32px;
+  box-shadow:0 30px 90px rgba(0,0,0,.8);
+}
+
+/* header */
+.header{display:flex;gap:18px;align-items:center;margin-bottom:22px}
+.logo-box{
+  width:110px;height:110px;
+  border-radius:18px;
+  background:var(--gold);
+}
+.title{
+  font-size:clamp(32px,4vw,56px);
+  font-weight:900;
+  color:var(--gold);
+}
+.subtitle{font-size:14px;color:var(--muted)}
+
+/* marquee */
+.marquee-wrap{
+  overflow:hidden;
+  border-radius:14px;
+  background:rgba(0,0,0,.4);
+  padding:18px;
+}
+
+.marquee{
+  display:flex;
+  gap:34px;
+  will-change:transform;
+}
+
+.track{
+  display:flex;
+  gap:34px;
+}
+
+.item{
+  min-width:240px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:14px 18px;
+  border-radius:14px;
+  background:rgba(255,255,255,.03);
+  font-weight:800;
+  color:var(--muted);
+}
+
+.logo{
+  width:110px;
+  height:110px;
+  border-radius:16px;
+  background:var(--gold);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.logo img{
+  width:78%;
+  height:78%;
+  object-fit:contain;
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg" id="bg"></div>
+
+<div class="wrap">
+  <div class="card">
+
+    <div class="header">
+      <div class="logo-box"></div>
+      <div>
+        <div class="title">Play BNB</div>
+        <div class="subtitle">Highlighted Exchanges</div>
+      </div>
+    </div>
+
+    <div class="marquee-wrap">
+      <div id="marquee" class="marquee"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ===== LOGOS ===== */
+const logos = [
+  { name:'Binance', file:'logos/binance.svg' },
+  { name:'Bybit', file:'logos/bybit.svg' },
+  { name:'KuCoin', file:'logos/kucoin.svg' },
+  { name:'OKX', file:'logos/okx.svg' },
+  { name:'Uniswap', file:'logos/uniswap.svg' },
+  { name:'PancakeSwap', file:'logos/pancakeswap.svg' }
+];
+
+const marquee = document.getElementById('marquee');
+
+function buildTrack(){
+  const track = document.createElement('div');
+  track.className = 'track';
+
+  logos.forEach(item=>{
+    const box = document.createElement('div');
+    box.className = 'item';
+
+    const logo = document.createElement('div');
+    logo.className = 'logo';
+
+    const img = document.createElement('img');
+    img.src = item.file;
+    img.alt = item.name;
+
+    const label = document.createElement('div');
+    label.textContent = item.name;
+
+    logo.appendChild(img);
+    box.appendChild(logo);
+    box.appendChild(label);
+    track.appendChild(box);
+  });
+
+  return track;
+}
+
+/* init marquee */
+const t1 = buildTrack();
+const t2 = buildTrack();
+marquee.append(t1, t2);
+
+requestAnimationFrame(()=>{
+  const w = t1.getBoundingClientRect().width;
+  const speed = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--speed'));
+  const duration = Math.max(10, w / speed);
+
+  const style = document.createElement('style');
+  style.innerHTML = `
+    @keyframes scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-${w}px); }
+    }
+  `;
+  document.head.appendChild(style);
+
+  marquee.style.animation = `scroll ${duration}s linear infinite`;
+});
+
+/* dots */
+const bg = document.getElementById('bg');
+for(let i=0;i<40;i++){
+  const d = document.createElement('div');
+  d.className='dot';
+  d.style.left=Math.random()*100+'vw';
+  d.style.top=Math.random()*100+'vh';
+  bg.appendChild(d);
+}
+</script>
+
+</body>
+</html>
